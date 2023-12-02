@@ -1,5 +1,8 @@
 const http = require("http");
 const fs = require("fs");
+const minimist = require("minimist");
+const args = minimist(process.argv.slice(2));
+const port = args.port ;
 
 let homeContent = "";
 let projectContent = "";
@@ -49,4 +52,7 @@ const server = http.createServer((request, response) => {
     }
 });
 
-server.listen(5000);
+server.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
