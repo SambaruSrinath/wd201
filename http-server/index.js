@@ -2,7 +2,11 @@ const http = require("http");
 const fs = require("fs");
 const minimist = require("minimist");
 const args = minimist(process.argv.slice(2));
+<<<<<<< HEAD
 const port = args.port ;
+=======
+const port = args.port || 8000;
+>>>>>>> da36108 (added todo-cli)
 
 let homeContent = "";
 let projectContent = "";
@@ -55,4 +59,7 @@ const server = http.createServer((request, response) => {
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> da36108 (added todo-cli)

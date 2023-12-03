@@ -10,6 +10,7 @@
   "author": "Srinath",
   "license": "ISC",
   "dependencies": {
-    "eslint": "^8.54.0"
+    "eslint": "^8.54.0",
+    "minimist": "^1.2.8"
   }
 }
