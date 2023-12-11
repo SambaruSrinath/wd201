@@ -114,3 +114,26 @@ test("should retrieve due later items", () => {
 
     // ... further test assertions ...
 });
+test("should display todos in a list format", () => {
+    // ... test setup ...
+
+    const displayableList = toDisplayableList();
+
+    // Add assertions to check if the displayableList is in the expected format
+    // For example, you can check if it contains "[X]" or "[ ]" for completed or incomplete tasks
+    expect(displayableList).toContain("[X]"); // Assuming a completed task is displayed with "[X]"
+    expect(displayableList).toContain("[ ]"); // Assuming an incomplete task is displayed with "[ ]"
+});
+
+test("should not mark a completed todo as overdue or due today", () => {
+    // ... test setup ...
+
+    markAsCompleted(todos[0].id);
+
+    const overdueItems = getOverdueItems();
+    const dueTodayItems = getDueTodayItems();
+
+    // Add assertions to check if completed todos are not mistakenly marked as overdue or due today
+    expect(overdueItems.length).toBe(0);
+    expect(dueTodayItems.length).toBe(0);
+});
