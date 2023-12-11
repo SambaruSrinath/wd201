@@ -116,7 +116,7 @@ it("should retrieve due later items", () => {
     const dueLaterItems = getDueLaterItems();
 
     // Update the expected count based on the number of future items added
-    expect(dueLaterItems.length).toBe(3);
+    expect(dueLaterItems.length).toBe(3); // Update this line to the correct expected count
 
     // Update the expected descriptions based on the added items
     expect(dueLaterItems[0].description).toBe("Finish project 1");
