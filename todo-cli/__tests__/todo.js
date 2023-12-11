@@ -105,9 +105,21 @@ it("should retrieve due today items", () => {
     expect(dueTodayItems[0].description).toBe("Study for exam");
 });
 it("should retrieve due later items", () => {
-    const futureDate = new Date("2023-12-15");
-    addTodo("Finish project", futureDate);
+    const futureDate1 = new Date("2023-12-15");
+    const futureDate2 = new Date("2023-12-16");
+    const futureDate3 = new Date("2023-12-17");
+
+    addTodo("Finish project 1", futureDate1);
+    addTodo("Finish project 2", futureDate2);
+    addTodo("Finish project 3", futureDate3);
+
     const dueLaterItems = getDueLaterItems();
-    expect(dueLaterItems.length).toBe(1);
-    expect(dueLaterItems[0].description).toBe("Finish project");
+
+    // Update the expected count based on the number of future items added
+    expect(dueLaterItems.length).toBe(3);
+
+    // Update the expected descriptions based on the added items
+    expect(dueLaterItems[0].description).toBe("Finish project 1");
+    expect(dueLaterItems[1].description).toBe("Finish project 2");
+    expect(dueLaterItems[2].description).toBe("Finish project 3");
 });
