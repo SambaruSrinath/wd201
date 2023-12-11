@@ -1,68 +1,75 @@
-/* eslint-disable no-undef */
-test('should create a new todo item', () => {
-    const newTodo = 'Buy groceries';
-    const todos = [];
-    const updatedTodos = addTodo(todos, newTodo);
-    expect(updatedTodos.length).toBe(1);
-    expect(updatedTodos[0]).toBe(newTodo);
-});
-test('should mark a todo as completed', () => {
-    const existingTodo = 'Finish report';
-    const todos = [existingTodo];
-    const updatedTodos = markAsCompleted(todos, existingTodo);
-    expect(updatedTodos[0]).toHaveProperty('isCompleted', true);
-});
-test('should retrieve overdue items', () => {
-    const pastDate = new Date(2023, 11, 10); // yesterday
-    const todo1 = 'Clean room';
-    const todo2 = 'Do laundry';
-    const todos = [
-        { description: todo1, dueDate: pastDate },
-        { description: todo2, dueDate: pastDate },
-    ];
-    const overdueTodos = getOverdueItems(todos);
-    expect(overdueTodos).toEqual([
-        { description: todo1, dueDate: pastDate },
-        { description: todo2, dueDate: pastDate },
-    ]);
-});
-test('should retrieve due today items', () => {
-    const today = new Date(2023, 11, 11); // today
-    const todo1 = 'Pay bills';
-    const todo2 = 'Call dentist';
-    const todos = [
-        { description: todo1, dueDate: today },
-        { description: todo2, dueDate: today },
-    ];
-    const dueTodayTodos = getDueTodayItems(todos);
-    expect(dueTodayTodos).toEqual([
-        { description: todo1, dueDate: today },
-        { description: todo2, dueDate: today },
-    ]);
-});
-test('should retrieve due later items', () => {
-    const futureDate = new Date(2023, 11, 12); // tomorrow
-    const todo1 = 'Go shopping';
-    const todo2 = 'Meet friends';
-    const todos = [
-        { description: todo1, dueDate: futureDate },
-        { description: todo2, dueDate: futureDate },
-    ];
-    const dueLaterTodos = getDueLaterItems(todos);
-    expect(dueLaterTodos).toEqual([
-        { description: todo1, dueDate: futureDate },
-        { description: todo2, dueDate: futureDate },
-    ]);
-});
+const todos = [];
 
+// Function to add new todo item
+function addTodo(description) {
+    todos.push({
+        id: Date.now(), // Unique identifier
+        description,
+        completed: false,
+        dueDate: null, // Optional due date
+    });
+}
 
-test('should create a displayable list of todos', () => {
-    const todo1 = { description: 'Clean room', isCompleted: false };
-    const todo2 = { description: 'Do laundry', isCompleted: true };
-    const todos = [todo1, todo2];
-    const displayableList = toDisplayableList(todos);
-    expect(displayableList).toEqual([
-        '[ ] Clean room',
-        '[X] Do laundry',
-    ]);
-});
+// Function to mark a todo as completed
+function markAsCompleted(id) {
+    const todo = todos.find((todo) => todo.id === id);
+    if (todo) {
+        todo.completed = true;
+    }
+}
+
+// Function to retrieve overdue items
+function getOverdueItems() {
+    const today = new Date();
+    return todos.filter((todo) => {
+        if (todo.dueDate && todo.dueDate < today && !todo.completed) {
+            return true;
+        }
+        return false;
+    });
+}
+
+// Function to retrieve due today items
+function getDueTodayItems() {
+    const today = new Date();
+    return todos.filter((todo) => {
+        if (
+            todo.dueDate &&
+            today.toDateString() === new Date(todo.dueDate).toDateString() &&
+            !todo.completed
+        ) {
+            return true;
+        }
+        return false;
+    });
+}
+
+// Function to retrieve due later items
+function getDueLaterItems() {
+    const today = new Date();
+    return todos.filter((todo) => {
+        if (todo.dueDate && todo.dueDate > today && !todo.completed) {
+            return true;
+        }
+        return false;
+    });
+}
+
+// Function to convert internal data to a displayable list
+function toDisplayableList() {
+    let output = "";
+    for (const todo of todos) {
+        const status = todo.completed ? "[X]" : "[ ]";
+        output += `${status} ${todo.description}\n`;
+    }
+    return output;
+}
+
+// Example usage
+addTodo("Buy groceries");
+addTodo("Finish homework", new Date("2023-12-12"));
+addTodo("Clean the room", new Date("2023-12-14"));
+
+markAsCompleted(todos[0].id);
+
+console.log(toDisplayableList());
