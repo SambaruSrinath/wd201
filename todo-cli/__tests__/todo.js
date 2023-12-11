@@ -1,12 +1,13 @@
+/* eslint-disable no-undef */
 const todos = [];
 
 // Function to add new todo item
-function addTodo(description) {
+function addTodo(description, dueDate = null) {
     todos.push({
         id: Date.now(), // Unique identifier
         description,
         completed: false,
-        dueDate: null, // Optional due date
+        dueDate,
     });
 }
 
@@ -21,23 +22,14 @@ function markAsCompleted(id) {
 // Function to retrieve overdue items
 function getOverdueItems() {
     const today = new Date();
-    return todos.filter((todo) => {
-        if (todo.dueDate && todo.dueDate < today && !todo.completed) {
-            return true;
-        }
-        return false;
-    });
+    return todos.filter((todo) => todo.dueDate && todo.dueDate < today && !todo.completed);
 }
 
 // Function to retrieve due today items
 function getDueTodayItems() {
     const today = new Date();
     return todos.filter((todo) => {
-        if (
-            todo.dueDate &&
-            today.toDateString() === new Date(todo.dueDate).toDateString() &&
-            !todo.completed
-        ) {
+        if (todo.dueDate && isSameDate(todo.dueDate, today) && !todo.completed) {
             return true;
         }
         return false;
@@ -47,12 +39,14 @@ function getDueTodayItems() {
 // Function to retrieve due later items
 function getDueLaterItems() {
     const today = new Date();
-    return todos.filter((todo) => {
-        if (todo.dueDate && todo.dueDate > today && !todo.completed) {
-            return true;
-        }
-        return false;
-    });
+    return todos.filter((todo) => todo.dueDate && todo.dueDate > today && !todo.completed);
+}
+
+// Helper function to check if two dates are on the same day
+function isSameDate(date1, date2) {
+    return date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear();
 }
 
 // Function to convert internal data to a displayable list
@@ -60,7 +54,11 @@ function toDisplayableList() {
     let output = "";
     for (const todo of todos) {
         const status = todo.completed ? "[X]" : "[ ]";
-        output += `${status} ${todo.description}\n`;
+        output += `${status} ${todo.description}`;
+        if (todo.dueDate) {
+            output += ` - Due: ${todo.dueDate.toLocaleDateString()}`;
+        }
+        output += "\n";
     }
     return output;
 }
