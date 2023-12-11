@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+const today = new Date().toISOString().substring(0, 10);
 const todoList = () => {
     all = []
 
@@ -10,10 +12,20 @@ const todoList = () => {
     }
 
     const overdue = () => {
-        return all.filter(
-            (item) => item.dueDate < new Date().toLocaleDateString("en-CA")
-        );
-    }
+        const today = new Date().toLocaleDateString("en-CA");
+        console.log("Today:", today);
+        console.log("All tasks:", all);
+
+        const overdueTasks = all.filter((item) => {
+            console.log("Task dueDate:", item.dueDate);
+            return true;  // Always include the task for now
+        });
+
+        console.log("Overdue tasks:", overdueTasks);
+        return overdueTasks;
+    };
+
+
 
     const dueToday = () => {
         return all.filter(
