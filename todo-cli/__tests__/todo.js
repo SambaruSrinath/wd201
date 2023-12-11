@@ -73,7 +73,7 @@ markAsCompleted(todos[0].id);
 console.log(toDisplayableList());
 
 /* eslint-disable no-undef */
-it("should add a new todo item", () => {
+test("should add a new todo item", () => {
     const initialLength = todos.length;
     addTodo("Buy milk");
     expect(todos.length).toBeGreaterThan(initialLength);
@@ -84,27 +84,27 @@ it("should add a new todo item", () => {
         dueDate: null,
     });
 });
-it("should mark a todo as completed", () => {
+test("should mark a todo as completed", () => {
     addTodo("Do laundry");
     const todoId = todos[0].id;
     markAsCompleted(todoId);
     expect(todos[0].completed).toBeTruthy();
 });
-it("should retrieve overdue items", () => {
+test("should retrieve overdue items", () => {
     const pastDate = new Date("2023-12-10");
     addTodo("Clean the house", pastDate);
     const overdueItems = getOverdueItems();
     expect(overdueItems.length).toBe(1);
     expect(overdueItems[0].description).toBe("Clean the house");
 });
-it("should retrieve due today items", () => {
+test("should retrieve due today items", () => {
     const today = new Date();
     addTodo("Study for exam", today);
     const dueTodayItems = getDueTodayItems();
     expect(dueTodayItems.length).toBe(1);
     expect(dueTodayItems[0].description).toBe("Study for exam");
 });
-it("should retrieve due later items", () => {
+test("should retrieve due later items", () => {
     // ... test setup ...
 
     const dueLaterItems = getDueLaterItems();
