@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 const todoList = require('../todo');
 
-
 describe('Todo List', () => {
     let list;
 
@@ -21,12 +20,11 @@ describe('Todo List', () => {
     });
 
     test('Retrieval of overdue items', () => {
-        const today = new Date().toLocaleDateString('en-CA');
-        list.add({ title: 'Overdue Todo', dueDate: today });
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1); // Set the due date to yesterday
+        list.add({ title: 'Overdue Todo', dueDate: yesterday.toLocaleDateString('en-CA') });
         expect(list.overdue().length).toBe(1);
     });
-
-
 
     test('Retrieval of due today items', () => {
         list.add({ title: 'Due Today Todo', dueDate: new Date().toLocaleDateString('en-CA') });
@@ -38,9 +36,12 @@ describe('Todo List', () => {
         expect(list.dueLater().length).toBe(1);
     });
 
-    // Add more tests as needed
-
     test('toDisplayableList function is implemented', () => {
         expect(typeof list.toDisplayableList).toBe('function');
     });
+
+    // Additional tests for further functionalities
+
+
+
 });
