@@ -13,17 +13,14 @@ const todoList = () => {
 
     const overdue = () => {
         const today = new Date().toLocaleDateString("en-CA");
-        console.log("Today:", today);
-        console.log("All tasks:", all);
 
         const overdueTasks = all.filter((item) => {
-            console.log("Task dueDate:", item.dueDate);
-            return true;  // Always include the task for now
+            return item.dueDate < today; // Only include tasks that are overdue
         });
 
-        console.log("Overdue tasks:", overdueTasks);
         return overdueTasks;
     };
+
 
 
 
