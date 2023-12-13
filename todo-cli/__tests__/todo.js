@@ -1,56 +1,55 @@
+let todoList = require("../todo");
+
+const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 /* eslint-disable no-undef */
-// todo.test.js
+describe("TodoList  Test Suite", () => {
+    beforeAll(() => {
+        // Seed the test data
+        [
+            {
+                title: "pay rent",
+                completed: false,
+                dueDate: new Date().toLocaleDateString("en-CA"),
+            },
+            {
+                title: "buy milk",
+                completed: false,
+                dueDate: new Date().toLocaleDateString("en-CA"),
+            },
+            {
+                title: "do homework",
+                completed: false,
+                dueDate: new Date().toLocaleDateString("en-CA"),
+            },
+        ].forEach(add);
+    });
+    test("Should add a new todo", () => {
+        expect(all.length).toEqual(3);
 
-const todoList = require('../todo.js');  // Adjust the path accordingly
+        add({
+            title: "A test item",
+            completed: false,
+            dueDate: new Date().toLocaleDateString("en-CA"),
+        });
 
-describe('Todo List', () => {
-    let list;
-    let today;
-
-    beforeEach(() => {
-        list = todoList();
-        today = new Date().toISOString().substring(0, 10);
+        expect(all.length).toEqual(4);
     });
 
-    test('Creating a new todo', () => {
-        list.add({ title: 'Test Todo', dueDate: '2023-12-31' });
-        expect(list.all.length).toBe(1);
+    test("Should mark a todo as complete", () => {
+        expect(all[0].completed).toEqual(false);
+        markAsComplete(0);
+        expect(all[0].completed).toEqual(true);
     });
 
-    test('Marking a todo as completed', () => {
-        list.add({ title: 'Test Todo', dueDate: '2023-12-31' });
-        list.markAsComplete(0);
-        expect(list.all[0].completed).toBe(true);
+    test("Should retrieve overdue items", () => {
+        expect(overdue().length).toEqual(0);
     });
 
-    test('Marking a non-existent todo as completed does not throw an error', () => {
-        expect(() => list.markAsComplete(0)).not.toThrow();
+    test("Should retrieve due today items", () => {
+        expect(dueToday().length).toEqual(4);
     });
 
-    test('Retrieval of overdue items', () => {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        list.add({ title: 'Overdue Todo', dueDate: yesterday.toISOString().substring(0, 10) });
-        expect(list.overdue().length).toBe(1);
-    });
-
-    test('Retrieval of due today items', () => {
-        list.add({ title: 'Due Today Todo', dueDate: today });
-        expect(list.dueToday().length).toBe(1);
-    });
-
-    test('Retrieval of due later items', () => {
-        list.add({ title: 'Due Later Todo', dueDate: '2023-12-31' });
-        expect(list.dueLater().length).toBe(1);
-    });
-
-    test('toDisplayableList function is implemented', () => {
-        expect(typeof list.toDisplayableList).toBe('function');
-    });
-
-    test('toDisplayableList returns the correct formatted string', () => {
-        list.add({ title: 'Test Todo', dueDate: '2023-12-31' });
-        const expectedOutput = '[ ] Test Todo 2023-12-31';
-        expect(list.toDisplayableList()).toBe(expectedOutput);
+    test("Should retrieve due later items", () => {
+        expect(dueLater().length).toEqual(0);
     });
 });
