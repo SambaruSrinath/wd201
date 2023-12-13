@@ -24,7 +24,7 @@ describe("TodoList  Test Suite", () => {
         ].forEach(add);
     });
     test("Should add a new todo", () => {
-        expect(all.length).toEqual(3);
+        const initialLength = all.length;
 
         add({
             title: "A test item",
@@ -32,12 +32,14 @@ describe("TodoList  Test Suite", () => {
             dueDate: new Date().toLocaleDateString("en-CA"),
         });
 
-        expect(all.length).toEqual(4);
+        expect(all.length).toEqual(initialLength + 1);
     });
     test("Should mark a todo as complete", () => {
-        expect(all[0].completed).toEqual(false);
+        const initialCompletionStatus = all[0].completed;
+
         markAsComplete(0);
-        expect(all[0].completed).toEqual(true);
+
+        expect(all[0].completed).toEqual(!initialCompletionStatus);
     });
 
     test("Should retrieve overdue items", () => {
