@@ -15,9 +15,8 @@ const todoList = () => {
     };
 
     const dueToday = () => {
-        return all.filter(
-            (item) => item.dueDate === new Date().toLocaleDateString("en-CA")
-        );
+        const today = new Date().toLocaleDateString("en-CA");
+        return all.filter((item) => item.dueDate === today);
     };
 
     const dueLater = () => {
