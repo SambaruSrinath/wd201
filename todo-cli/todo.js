@@ -5,7 +5,11 @@ const todoList = () => {
         all.push(todoItem);
     };
     const markAsComplete = (index) => {
-        all[index].completed = true;
+        if (index >= 0 && index < all.length) {
+            all[index].completed = true;
+        } else {
+            throw new Error('Invalid index');
+        }
     };
 
     const overdue = () => {
