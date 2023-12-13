@@ -34,7 +34,6 @@ describe("TodoList  Test Suite", () => {
 
         expect(all.length).toEqual(4);
     });
-
     test("Should mark a todo as complete", () => {
         expect(all[0].completed).toEqual(false);
         markAsComplete(0);
