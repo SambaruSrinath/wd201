@@ -1,76 +1,40 @@
-/* eslint-disable no-undef */
+// todo.js
+
 const today = new Date().toISOString().substring(0, 10);
+
 const todoList = () => {
-    all = []
+    const all = [];
 
     const add = (todoItem) => {
-        all.push(todoItem)
-    }
+        all.push(todoItem);
+    };
 
     const markAsComplete = (index) => {
-        all[index].completed = true
-    }
+        if (index >= 0 && index < all.length) {
+            all[index].completed = true;
+        }
+    };
 
     const overdue = () => {
-        const today = new Date().toLocaleDateString("en-CA");
-
-        const overdueTasks = all.filter((item) => {
-            return item.dueDate < today; // Only include tasks that are overdue
-        });
-
+        const overdueTasks = all.filter((item) => new Date(item.dueDate) < new Date(today));
         return overdueTasks;
     };
 
-
-
-
     const dueToday = () => {
-        return all.filter(
-            (item) => item.dueDate === new Date().toLocaleDateString("en-CA")
-        );
-    }
+        return all.filter((item) => item.dueDate === today);
+    };
 
     const dueLater = () => {
-        return all.filter(
-            (item) => item.dueDate > new Date().toLocaleDateString("en-CA")
-        );
-    }
+        return all.filter((item) => item.dueDate > today);
+    };
 
-    const toDisplayableList = (list) => {
-        const dsl = [];
-        list.forEach((element) => {
-            if (element.dueDate === today) {
-                if (element.completed === true) {
-                    const a = "[x] " + element.title;
-                    dsl.push(a);
-                } else {
-                    const a = "[ ] " + element.title;
-                    dsl.push(a);
-                }
-            } else {
-                if (element.completed === true) {
-                    const a = "[x] " + element.title + " " + element.dueDate;
-                    dsl.push(a);
-                } else {
-                    const a = "[ ] " + element.title + " " + element.dueDate;
-                    dsl.push(a);
-                }
-            }
+    const toDisplayableList = () => {
+        const dsl = all.map((element) => {
+            const status = element.completed ? "[x]" : "[ ]";
+            return `${status} ${element.title} ${element.dueDate}`;
         });
-        let g = "";
-        for (let i = 0; i < dsl.length; i++) {
-            // eslint-disable-next-line no-undef
-            obj = dsl[i];
-            if (i === 0) {
-                // eslint-disable-next-line no-undef
-                g = g + obj;
-            } else {
-                // eslint-disable-next-line no-undef
-                g = g + "\n" + obj;
-            }
-        }
-        return g;
-    }
+        return dsl.join('\n');
+    };
 
     return {
         all,
@@ -79,12 +43,8 @@ const todoList = () => {
         overdue,
         dueToday,
         dueLater,
-        toDisplayableList
+        toDisplayableList,
     };
 };
-
-// ####################################### #
-// DO NOT CHANGE ANYTHING BELOW THIS LINE. #
-// ####################################### #
 
 module.exports = todoList;
