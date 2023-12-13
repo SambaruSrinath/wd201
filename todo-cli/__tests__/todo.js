@@ -1,11 +1,15 @@
 /* eslint-disable no-undef */
-const todoList = require('../todo');
+// todo.test.js
+
+const todoList = require('../todo.js');  // Adjust the path accordingly
 
 describe('Todo List', () => {
     let list;
+    let today;
 
     beforeEach(() => {
         list = todoList();
+        today = new Date().toISOString().substring(0, 10);
     });
 
     test('Creating a new todo', () => {
@@ -19,15 +23,19 @@ describe('Todo List', () => {
         expect(list.all[0].completed).toBe(true);
     });
 
+    test('Marking a non-existent todo as completed does not throw an error', () => {
+        expect(() => list.markAsComplete(0)).not.toThrow();
+    });
+
     test('Retrieval of overdue items', () => {
         const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1); // Set the due date to yesterday
-        list.add({ title: 'Overdue Todo', dueDate: yesterday.toLocaleDateString('en-CA') });
+        yesterday.setDate(yesterday.getDate() - 1);
+        list.add({ title: 'Overdue Todo', dueDate: yesterday.toISOString().substring(0, 10) });
         expect(list.overdue().length).toBe(1);
     });
 
     test('Retrieval of due today items', () => {
-        list.add({ title: 'Due Today Todo', dueDate: new Date().toLocaleDateString('en-CA') });
+        list.add({ title: 'Due Today Todo', dueDate: today });
         expect(list.dueToday().length).toBe(1);
     });
 
@@ -40,8 +48,9 @@ describe('Todo List', () => {
         expect(typeof list.toDisplayableList).toBe('function');
     });
 
-    // Additional tests for further functionalities
-
-
-
+    test('toDisplayableList returns the correct formatted string', () => {
+        list.add({ title: 'Test Todo', dueDate: '2023-12-31' });
+        const expectedOutput = '[ ] Test Todo 2023-12-31';
+        expect(list.toDisplayableList()).toBe(expectedOutput);
+    });
 });
