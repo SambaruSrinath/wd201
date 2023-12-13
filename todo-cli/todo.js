@@ -1,6 +1,3 @@
-// todo.js
-
-/* eslint-disable no-undef */
 const todoList = () => {
     const all = [];
 
@@ -13,18 +10,18 @@ const todoList = () => {
     };
 
     const overdue = () => {
-        const today = new Date().toLocaleDateString("en-CA");
-        return all.filter((item) => item.dueDate < today);
+        const today = new Date();
+        return all.filter((item) => new Date(item.dueDate) < today);
     };
 
     const dueToday = () => {
-        const today = new Date().toLocaleDateString("en-CA");
-        return all.filter((item) => item.dueDate === today);
+        const today = new Date();
+        return all.filter((item) => new Date(item.dueDate).toDateString() === today.toDateString());
     };
 
     const dueLater = () => {
-        const today = new Date().toLocaleDateString("en-CA");
-        return all.filter((item) => item.dueDate > today);
+        const today = new Date();
+        return all.filter((item) => new Date(item.dueDate) > today);
     };
 
     const toDisplayableList = (list) => {
@@ -46,4 +43,3 @@ const todoList = () => {
 };
 
 module.exports = todoList;
-
